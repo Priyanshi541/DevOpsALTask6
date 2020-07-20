@@ -1,0 +1,64 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  selector:
+    app: webapp
+    env: prod
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30303
+      targetPort: 80
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: web-pv-claim
+    labels:
+        app: webapp
+        env: prod
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+      env: prod
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: webapp
+        env: prod
+    spec:
+      containers:
+      - image: priyanshi541/apache:v1
+        name: webapp
+        ports:
+        - containerPort: 80
+          name: webapp
+        volumeMounts:
+        - name: webapp-persistent-storage
+          mountPath: /var/log/httpd
+      volumes:
+      - name: webapp-persistent-storage
+        persistentVolumeClaim:
+          claimName: web-pv-claim
