@@ -1,7 +1,7 @@
 job("task6_job1"){
     description("Downloading the files from GitHub And Creating a Docker Image using the files")
 	scm{
-		github('priyanshi541/groovy_code' , 'master')
+		github('priyanshi541/DevOpsALTask6' , 'master')
                        }
 	triggers{
 		scm(" * * * * * ")
