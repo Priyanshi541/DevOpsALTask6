@@ -47,11 +47,11 @@ job("task6_job3"){
 		upstream('task6_job2' , 'SUCCESS')
 	}
 	steps{
-		shell('''status=$(curl -o /dev/null  -s  -w "%{http_code}"  192.168.99.108:30000)
-		if [ $status == 200 ]
+		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) ==200 ]]
 		then
-		exit 1
+		echo "Application Running"
 		else
+		echo "There is some problem with the application"
 		exit 0
 		fi
 		''')
