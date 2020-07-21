@@ -64,11 +64,12 @@ job("task6_job4"){
 		upstream('task6_job3' , 'SUCCESS')
 	}
 	steps{
- 		if [ $status == 200 ]
+ 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) ==200 ]]
 		then
 		echo " App is Properly Running"
 		else
  		shell("python3 /task6_dev/mail.py")
-		fi		
+		fi	
+		''')
 	}
 }
