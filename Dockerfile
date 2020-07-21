@@ -3,6 +3,6 @@ FROM centos
 
 RUN yum install httpd -y 
 
-COPY /task6_dev/index.php  /var/www/html/
+COPY index.html  /var/www/html/
 
-CMD /usr/sbin/httpd  -DFOREGROUND 
+CMD ["/usr/sbin/httpd","-D","FOREGROUND"] 
