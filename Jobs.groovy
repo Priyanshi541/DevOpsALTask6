@@ -18,7 +18,7 @@ job("task6_job1"){
 
                                 cd /task6_dev/
                                 sudo docker build -t apache:v1 .
-                                sudo docker tag  my-apache2:v5  priyanshi541/apache:v1
+                                sudo docker tag  apache:v1  priyanshi541/apache:v1
                                 sudo docker push priyanshi541/apache:v1
                                 ''')
 	}
