@@ -41,7 +41,11 @@ job("task6_job2"){
             }
 	triggers{
 	
-                       scm('@daily')
+                    pipeline {
+                        triggers {
+                           githubPush()
+                     }
+                  }
                 }
    
 	steps{
