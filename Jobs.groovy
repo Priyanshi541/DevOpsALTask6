@@ -40,14 +40,8 @@ job("task6_job2"){
 		github('priyanshi541/webapp' , 'master')
             }
 	triggers{
-		properties { 
-              	   pipelineTriggers {
-      		   triggers {
-        	   githubPush()
-                   }
-               }
-	  }
-	}
+		scm(" * * * * * ")
+	        }
 	steps{
 		shell('''if sudo kubectl get deployment myapp
 		then
