@@ -34,35 +34,15 @@ job("task6_job1"){
 	}
 }
 
-job("task6_job2"){
-    description("Pull GitHub Repo Automatically when some developer push repo to Github")
-	 scm{
-		github('priyanshi541/webapp' , 'master')
-            }
-	triggers{
-	 	scm(" * * * * * ")
-                    
-                }
-   
-	steps{
-		shell('''if sudo kubectl get deployment myapp
-		then
-		echo "Deployment Exists"
-		else
-		sudo kubectl create -f /task6_dev/deploy.yml
-		fi
-		''')
-	
-    	}
-}
 
-job("task6_job3"){
+
+job("task6_job2"){
     description("Testing the Application that it is properly deployed or not")
 	triggers{
 		upstream('task6_job2' , 'SUCCESS')
 	}
 	steps{
-		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) == 200 ]]
+		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30303) == 200 ]]
 		then
 		echo "Application Running"
 		else
@@ -72,13 +52,13 @@ job("task6_job3"){
 	}
 }
 
-job("task6_job4"){
+job("task6_job3"){
     description("Sending a Mail to a Developer if the Application Fails")
 	triggers{
 		upstream('task6_job3' , 'SUCCESS')
 	}
 	steps{
- 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) == 200 ]]
+ 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30303) == 200 ]]
 		then
 		echo " App is Properly Running"
 		else
