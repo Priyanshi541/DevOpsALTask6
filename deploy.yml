@@ -50,7 +50,7 @@ spec:
         env: prod
     spec:
       containers:
-      - image: priyanshi541/apache:v1
+      - image: httpd
         name: webapp
         ports:
         - containerPort: 80
