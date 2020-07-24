@@ -47,7 +47,7 @@ job("task6_job2"){
                    }
                }
 	  }
-	
+	}
 	steps{
 		shell('''if sudo kubectl get deployment myapp
 		then
