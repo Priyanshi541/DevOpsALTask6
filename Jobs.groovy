@@ -17,18 +17,37 @@ job("task6_job1"){
                                 fi
 
                                 cd /task6_dev/
-                                sudo docker build -t apache:v1 .
-                                sudo docker tag  apache:v1  priyanshi541/apache:v1
-                                sudo docker push priyanshi541/apache:v1
+				
+                                if cat deploy.yml | grep httpd
+				then
+					if sudo kubectl get deployment myapp
+					then
+					echo "Deployment Exists"
+					else
+					sudo kubectl create -f /task6_dev/deploy.yml
+				fi
+				else 
+				echo "Not an httpd website"
+				fi
+				
                                 ''')
 	}
 }
 
 job("task6_job2"){
-    description("Launching & Monitoring the Pods launched by Kubernetes")
+    description("Pull GitHub Repo Automatically when some developer push repo to Github")
+	 scm{
+		github('priyanshi541/webapp' , 'master')
+            }
 	triggers{
-		upstream('task6_job1' , 'SUCCESS')
-	}
+		properties { 
+              	   pipelineTriggers {
+      		   triggers {
+        	   githubPush()
+                   }
+               }
+	  }
+	
 	steps{
 		shell('''if sudo kubectl get deployment myapp
 		then
@@ -47,12 +66,11 @@ job("task6_job3"){
 		upstream('task6_job2' , 'SUCCESS')
 	}
 	steps{
-		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) ==200 ]]
+		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) == 200 ]]
 		then
 		echo "Application Running"
 		else
 		echo "There is some problem with the application"
-		exit 0
 		fi
 		''')
 	}
@@ -64,7 +82,7 @@ job("task6_job4"){
 		upstream('task6_job3' , 'SUCCESS')
 	}
 	steps{
- 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) ==200 ]]
+ 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30000) == 200 ]]
 		then
 		echo " App is Properly Running"
 		else
