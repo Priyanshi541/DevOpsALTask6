@@ -40,7 +40,7 @@ job("task6_job2"){
 		github('priyanshi541/webapp' , 'master')
             }
 	triggers{
-		  triggers {
+	
                        scm('@daily')
                 }
    
