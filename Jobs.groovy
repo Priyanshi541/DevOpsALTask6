@@ -18,7 +18,7 @@ job("task6_job1"){
 
                                 cd /task6_dev/
 				
-                                if cat deploy.yml | grep httpd
+                                if cat Dockerfile | grep *.html
 				then
 					if sudo kubectl get deployment myapp
 					then
@@ -27,9 +27,8 @@ job("task6_job1"){
 					sudo kubectl create -f /task6_dev/deploy.yml
 				fi
 				else 
-				echo "Not an httpd website"
+				echo "Not an html website"
 				fi
-				
                                 ''')
 	}
 }
@@ -42,7 +41,7 @@ job("task6_job2"){
 		upstream('task6_job2' , 'SUCCESS')
 	}
 	steps{
-		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30303) == 200 ]]
+		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.43.138:30303) == 200 ]]
 		then
 		echo "Application Running"
 		else
@@ -58,7 +57,7 @@ job("task6_job3"){
 		upstream('task6_job3' , 'SUCCESS')
 	}
 	steps{
- 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.99.108:30303) == 200 ]]
+ 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.43.138:30303) == 200 ]]
 		then
 		echo " App is Properly Running"
 		else
