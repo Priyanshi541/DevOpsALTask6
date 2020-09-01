@@ -51,6 +51,7 @@ job("task6_job2"){
 	}
 }
 
+
 job("task6_job3"){
     description("Sending a Mail to a Developer if the Application Fails")
 	triggers{
