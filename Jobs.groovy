@@ -38,7 +38,7 @@ job("task6_job1"){
 job("task6_job2"){
     description("Testing the Application that it is properly deployed or not")
 	triggers{
-		upstream('task6_job2' , 'SUCCESS')
+		upstream('task6_job1' , 'SUCCESS')
 	}
 	steps{
 		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.43.138:30303) == 200 ]]
@@ -55,7 +55,7 @@ job("task6_job2"){
 job("task6_job3"){
     description("Sending a Mail to a Developer if the Application Fails")
 	triggers{
-		upstream('task6_job3' , 'SUCCESS')
+		upstream('task6_job2' , 'SUCCESS')
 	}
 	steps{
  		shell('''if [[ $(curl -o /dev/null  -s  -w "%{http_code}"  http://192.168.43.138:30303) == 200 ]]
